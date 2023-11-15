@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "883687027138",
+    "project_id": "alokitokrishi-90110",
+    "storage_bucket": "alokitokrishi-90110.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883687027138:android:b2f111a07fa2c1b18d665b",
+        "android_client_info": {
+          "package_name": "com.alokitokrishi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9BTX79XD9c_tZdnWMWqKVpAPUlokyEJc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
