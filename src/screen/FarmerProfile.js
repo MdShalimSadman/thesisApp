@@ -35,7 +35,7 @@ const FarmerProfile = ({ route, navigation }) => {
     };
 
     // Navigate to CustomerCheckout screen and pass data
-    navigation.navigate('customerCheckout', checkoutData);
+    navigation.navigate('Customer Checkout', checkoutData);
   };
 
   const getTotalPrice = () => {

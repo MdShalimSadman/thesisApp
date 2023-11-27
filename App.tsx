@@ -37,7 +37,7 @@ function App(): JSX.Element {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="SignUp2" component={SignUp2} />
         <Stack.Screen name="FarmerProfile" component={FarmerProfile} />
-        <Stack.Screen name="customerCheckout" component={customerCheckout} />
+        <Stack.Screen name="Customer Checkout" component={customerCheckout} />
       </Stack.Navigator>
     </NavigationContainer>
   );
