@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 
-const FarmerProfile = ({ route, navigation }) => {
-  const { name, products } = route.params;
+const FarmerProfile = ({route, navigation}) => {
+  const {name, products} = route.params;
 
   const dummyPrices = {
     Rice: 2.5,
@@ -10,7 +17,7 @@ const FarmerProfile = ({ route, navigation }) => {
     Carrot: 0.75,
     Cucumber: 1.5,
     Potato: 1.3,
-    Strawberry:1.5,
+    Strawberry: 1.5,
     // Add more dummy prices as needed
   };
 
@@ -25,12 +32,17 @@ const FarmerProfile = ({ route, navigation }) => {
 
   const handleAddToCart = () => {
     // Filter out products with quantity > 0
-    const selectedProducts = Object.keys(cart).filter(product => cart[product] > 0);
+    const selectedProducts = Object.keys(cart).filter(
+      product => cart[product] > 0,
+    );
 
     // Prepare data to pass to CustomerCheckout screen
     const checkoutData = {
       farmerName: name,
-      selectedProducts: selectedProducts.map(product => ({ name: product, quantity: cart[product] })),
+      selectedProducts: selectedProducts.map(product => ({
+        name: product,
+        quantity: cart[product],
+      })),
       totalPrice: getTotalPrice(),
     };
 
@@ -40,7 +52,7 @@ const FarmerProfile = ({ route, navigation }) => {
 
   const getTotalPrice = () => {
     let totalPrice = 0;
-    Object.keys(cart).forEach((product) => {
+    Object.keys(cart).forEach(product => {
       const quantity = cart[product];
       const price = dummyPrices[product];
       totalPrice += quantity * price;
@@ -48,17 +60,22 @@ const FarmerProfile = ({ route, navigation }) => {
     return totalPrice.toFixed(2); // Round to 2 decimal places
   };
 
-  const renderProductItem = ({ item }) => (
+  const renderProductItem = ({item}) => (
     <View style={styles.productItem}>
       <Text style={styles.productName}>{item}</Text>
-      <TextInput
-        style={styles.quantityInput}
-        placeholder="qty (kg)"
-        keyboardType="numeric"
-        placeholderTextColor="grey"
-        value={cart[item] ? cart[item].toString() : ''}
-        onChangeText={text => handleQuantityChange(item, text)}
-      />
+      <View style={styles.productDetails}>
+        <Text style={styles.productPrice}>{`Tk per Kg: ${dummyPrices[item].toFixed(
+          2,
+        )}`}</Text>
+        <TextInput
+          style={styles.quantityInput}
+          placeholder="qty (kg)"
+          keyboardType="numeric"
+          placeholderTextColor="grey"
+          value={cart[item] ? cart[item].toString() : ''}
+          onChangeText={text => handleQuantityChange(item, text)}
+        />
+      </View>
     </View>
   );
 
@@ -70,7 +87,9 @@ const FarmerProfile = ({ route, navigation }) => {
         keyExtractor={item => item}
         renderItem={renderProductItem}
       />
-      <Text style={styles.totalPriceText}>Total Price: Taka {getTotalPrice()}</Text>
+      <Text style={styles.totalPriceText}>
+        Total Price: Taka {getTotalPrice()}
+      </Text>
       <TouchableOpacity onPress={handleAddToCart}>
         <View style={styles.addToCartButton}>
           <Text style={styles.addToCartButtonText}>+ Add to Cart</Text>
@@ -81,6 +100,15 @@ const FarmerProfile = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  productDetails: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  productPrice: {
+    fontSize: 16,
+    color: 'grey',
+    marginRight: 10,
+  },
   container: {
     flex: 1,
     padding: 16,

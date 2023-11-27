@@ -45,7 +45,7 @@ const Home = () => {
   const renderFarmerItem = ({item}) => (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('FarmerProfile', {
+        navigation.navigate('Farmer Profile', {
           name: item.name,
           products: item.products,
         });
