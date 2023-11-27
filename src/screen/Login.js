@@ -6,16 +6,17 @@ import {
   TextInput,
   StyleSheet,
 } from 'react-native';
-import {Auth} from '../services';
+import auth from '@react-native-firebase/auth';
 
 const Login = props => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
     try {
-      // Assuming Auth.signIn returns a promise
-      await Auth.signIn(email, password);
+      // Assuming Auth.signIn returns a promise  
+      const response = await auth().signInWithEmailAndPassword(email.trim(), password)
+      console.log({response});
       // If successful, navigate to the 'Home' screen
       props.navigation.navigate('Home');
     } catch (error) {

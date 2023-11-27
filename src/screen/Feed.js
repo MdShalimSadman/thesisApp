@@ -1,5 +1,13 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, FlatList, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+
 
 const Feed = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -34,12 +42,21 @@ const Feed = () => {
   );
 
   const renderFarmerItem = ({item}) => (
-    <View style={styles.farmerItem}>
-      <Text style={styles.farmerName}>{item.name}</Text>
-      <Text style={styles.productsList}>
-        Products: {item.products.join(', ')}
-      </Text>
-    </View>
+    <TouchableOpacity
+      onPress={() => {
+        item.navigation.navigate('FarmerProfile', {
+          name: item.name,
+          products: item.products,
+        });
+      }}
+    >
+      <View style={styles.farmerItem}>
+        <Text style={styles.farmerName}>{item.name}</Text>
+        <Text style={styles.productsList}>
+          Products: {item.products.join(', ')}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 
   return (
