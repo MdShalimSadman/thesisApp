@@ -73,7 +73,7 @@ const FarmerProfile = ({ route, navigation }) => {
       <Text style={styles.totalPriceText}>Total Price: Taka {getTotalPrice()}</Text>
       <TouchableOpacity onPress={handleAddToCart}>
         <View style={styles.addToCartButton}>
-          <Text style={styles.addToCartButtonText}>Add to Cart</Text>
+          <Text style={styles.addToCartButtonText}>+ Add to Cart</Text>
         </View>
       </TouchableOpacity>
     </View>
