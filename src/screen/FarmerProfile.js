@@ -4,6 +4,16 @@ import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'r
 const FarmerProfile = ({ route }) => {
   const { name, products } = route.params;
 
+  const dummyPrices = {
+    Rice: 2.5,
+    Tomato: 1.0,
+    Carrot: 0.75,
+    Cucumber: 1.5,
+    Potato: 1.3,
+    Strawberry:1.5,
+    // Add more dummy prices as needed
+  };
+
   const [cart, setCart] = useState({}); // State to track selected quantities
 
   const handleQuantityChange = (product, quantity) => {
@@ -19,16 +29,26 @@ const FarmerProfile = ({ route }) => {
     // You can further implement the logic to send the cart data to a server or perform other actions.
   };
 
+  const getTotalPrice = () => {
+    let totalPrice = 0;
+    Object.keys(cart).forEach((product) => {
+      const quantity = cart[product];
+      const price = dummyPrices[product];
+      totalPrice += quantity * price;
+    });
+    return totalPrice.toFixed(2); // Round to 2 decimal places
+  };
+
   const renderProductItem = ({ item }) => (
     <View style={styles.productItem}>
       <Text style={styles.productName}>{item}</Text>
       <TextInput
         style={styles.quantityInput}
-        placeholder="qty (kg)"
+        placeholder="Quantity"
         keyboardType="numeric"
-        placeholderTextColor="grey"
+        placeholderTextColor="black"
         value={cart[item] ? cart[item].toString() : ''}
-        onChangeText={(text) => handleQuantityChange(item, text)}
+        onChangeText={text => handleQuantityChange(item, text)}
       />
     </View>
   );
@@ -38,7 +58,7 @@ const FarmerProfile = ({ route }) => {
       <Text style={styles.headerText}>{name}'s Products</Text>
       <FlatList
         data={products}
-        keyExtractor={(item) => item}
+        keyExtractor={item => item}
         renderItem={renderProductItem}
       />
       <TouchableOpacity onPress={handleAddToCart}>
@@ -46,6 +66,7 @@ const FarmerProfile = ({ route }) => {
           <Text style={styles.addToCartButtonText}>Add to Cart</Text>
         </View>
       </TouchableOpacity>
+      <Text style={styles.totalPriceText}>Total Price: Taka {getTotalPrice()}</Text>
     </View>
   );
 };
@@ -91,6 +112,12 @@ const styles = StyleSheet.create({
   addToCartButtonText: {
     color: 'white',
     fontSize: 18,
+  },
+  totalPriceText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
+    marginTop: 20,
   },
 });
 
