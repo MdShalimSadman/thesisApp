@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native';
 
-const FarmerProfile = ({ route }) => {
+const FarmerProfile = ({ route, navigation }) => {
   const { name, products } = route.params;
 
   const dummyPrices = {
@@ -24,9 +24,18 @@ const FarmerProfile = ({ route }) => {
   };
 
   const handleAddToCart = () => {
-    // Implement your logic for handling the "Add to Cart" action
-    console.log('Cart:', cart);
-    // You can further implement the logic to send the cart data to a server or perform other actions.
+    // Filter out products with quantity > 0
+    const selectedProducts = Object.keys(cart).filter(product => cart[product] > 0);
+
+    // Prepare data to pass to CustomerCheckout screen
+    const checkoutData = {
+      farmerName: name,
+      selectedProducts: selectedProducts.map(product => ({ name: product, quantity: cart[product] })),
+      totalPrice: getTotalPrice(),
+    };
+
+    // Navigate to CustomerCheckout screen and pass data
+    navigation.navigate('customerCheckout', checkoutData);
   };
 
   const getTotalPrice = () => {
@@ -44,9 +53,9 @@ const FarmerProfile = ({ route }) => {
       <Text style={styles.productName}>{item}</Text>
       <TextInput
         style={styles.quantityInput}
-        placeholder="Quantity"
+        placeholder="qty (kg)"
         keyboardType="numeric"
-        placeholderTextColor="black"
+        placeholderTextColor="grey"
         value={cart[item] ? cart[item].toString() : ''}
         onChangeText={text => handleQuantityChange(item, text)}
       />
@@ -61,12 +70,12 @@ const FarmerProfile = ({ route }) => {
         keyExtractor={item => item}
         renderItem={renderProductItem}
       />
+      <Text style={styles.totalPriceText}>Total Price: Taka {getTotalPrice()}</Text>
       <TouchableOpacity onPress={handleAddToCart}>
         <View style={styles.addToCartButton}>
           <Text style={styles.addToCartButtonText}>Add to Cart</Text>
         </View>
       </TouchableOpacity>
-      <Text style={styles.totalPriceText}>Total Price: Taka {getTotalPrice()}</Text>
     </View>
   );
 };
