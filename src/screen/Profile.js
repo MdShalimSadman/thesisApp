@@ -10,7 +10,6 @@ import {
 import firestore from '@react-native-firebase/firestore';
 // import uuid from 'react-native-uuid';
 
-
 const Profile = props => {
   const [name, setName] = useState();
   const [address, setAddress] = useState();
@@ -28,6 +27,7 @@ const Profile = props => {
 
   const addUserToFirestore = async (userData) => {
     try {
+      console.log({userData});
       await firestore()
         .collection('users')
         .add(userData);

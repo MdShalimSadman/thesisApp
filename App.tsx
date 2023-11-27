@@ -24,6 +24,7 @@ import Login from './src/screen/Login';
 import SignUp from './src/screen/SignUp';
 import Home from './src/screen/Home';
 import SignUp2 from './src/screen/SignUp2';
+import FarmerProfile from './src/screen/FarmerProfile';
 
 const Stack = createNativeStackNavigator();
 function App(): JSX.Element {
@@ -34,6 +35,7 @@ function App(): JSX.Element {
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="SignUp2" component={SignUp2} />
+        <Stack.Screen name="FarmerProfile" component={FarmerProfile} />
       </Stack.Navigator>
     </NavigationContainer>
   );
