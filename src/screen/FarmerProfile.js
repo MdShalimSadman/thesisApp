@@ -18,7 +18,6 @@ const FarmerProfile = ({route, navigation}) => {
     Cucumber: 1.5,
     Potato: 1.3,
     Strawberry: 1.5,
-    // Add more dummy prices as needed
   };
 
   const [cart, setCart] = useState({}); // State to track selected quantities

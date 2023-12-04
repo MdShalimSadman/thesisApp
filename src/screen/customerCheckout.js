@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity} from 'react-native';
 
-const CustomerCheckout = ({route}) => {
+const CustomerCheckout = ({route, navigation}) => {
   const {farmerName, selectedProducts, totalPrice} = route.params;
 
   const [customerName, setCustomerName] = useState('');
@@ -67,6 +67,7 @@ const CustomerCheckout = ({route}) => {
       borderRadius: 5,
       marginBottom: 10,
       paddingLeft: 10,
+      color: 'black',
     },
     proceedToPaymentButton: {
       backgroundColor: 'green',
@@ -81,6 +82,17 @@ const CustomerCheckout = ({route}) => {
       fontSize: 18,
     },
   });
+
+  const handleProceedToPayment = () => {
+    // Navigate to Bidding screen and pass necessary parameters
+    navigation.navigate('Bidding', {
+      customerName,
+      customerPhone,
+      customerAddress,
+      farmerName,
+      totalPrice,
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -124,9 +136,9 @@ const CustomerCheckout = ({route}) => {
         )}
       />
       <Text style={styles.totalPriceText}>Total Price: Taka {totalPrice}</Text>
-      <TouchableOpacity >
+       <TouchableOpacity onPress={handleProceedToPayment}>
         <View style={styles.proceedToPaymentButton}>
-          <Text style={styles.proceedToPaymentButtonText}>Proceed to Payment</Text>
+          <Text style={styles.proceedToPaymentButtonText}>Proceed to Bidding</Text>
         </View>
       </TouchableOpacity>
       {/* Additional components or features can be added here */}
