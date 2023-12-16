@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 import { Auth } from '../services';
+import {useTranslation} from 'react-i18next';
+import i18n from '../i18n';
+import * as RNLocalize from 'react-native-localize';
 
 const SignUp = (props) => {
   const [email, setEmail] = useState();
@@ -19,17 +22,19 @@ const SignUp = (props) => {
     }
   };
 
+  const { t } = useTranslation(['translation'], { i18n });
+
   return (
     <View style={styles.container}>
-      <Text style={styles.logoText}>Alokito Krishi</Text>
+      <Text style={styles.logoText}>{t('title')}</Text>
 
       <TextInput
-        placeholder="Enter email"
+        placeholder={t('email')}
         onChangeText={(e) => setEmail(e)}
         style={styles.textInput}
       />
       <TextInput
-        placeholder="Enter password"
+        placeholder={t('password')}
         onChangeText={(e) => setPassword(e)}
         style={styles.textInput}
         secureTextEntry={true}

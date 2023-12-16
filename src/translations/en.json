@@ -1,5 +1,9 @@
 {
-    "greeting": "Hello!",
-    "welcome": "Welcome to my app!"
+    "title": "Alokito Krishi",
+    "email": "Enter email",
+    "password":"Enter password",
+    "accountQuestion":"Do not have an Account?",
+    "createAccount":"Create Account",
+    "login":"Login"
   }
   

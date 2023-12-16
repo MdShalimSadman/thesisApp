@@ -1,68 +1,109 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   TextInput,
   StyleSheet,
-  Button
+  Button,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {useTranslation} from 'react-i18next';
 import i18n from '../i18n';
 import * as RNLocalize from 'react-native-localize';
 
-const Login = props => {
+const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState('en');
 
   const handleLogin = async () => {
     try {
-      // Assuming Auth.signIn returns a promise  
-      const response = await auth().signInWithEmailAndPassword(email.trim(), password)
-      console.log({response});
-      // If successful, navigate to the 'Home' screen
+      const response = await auth().signInWithEmailAndPassword(
+        email.trim(),
+        password
+      );
+      console.log({ response });
       props.navigation.navigate('Home');
     } catch (error) {
-      // Handle any authentication errors here
       console.error('Authentication error:', error.message);
-      // You might want to display an error message to the user
     }
   };
 
-  const {t} = useTranslation(['translation'], {i18n});
-  const changeLanguage = lng => {
+  const { t } = useTranslation(['translation'], { i18n });
+  const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
+    setSelectedLanguage(lng);
   };
 
   return (
-    <View style={styles.container}>
-      <Button title="English" onPress={() => changeLanguage('en')} />
-      <Button title="বাংলা" onPress={() => changeLanguage('bn')} />
-      <Text style={styles.logoText}>{t('greeting')}</Text>
-      <TextInput
-        placeholder="Enter email"
-        onChangeText={e => setEmail(e)}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder="Enter password"
-        onChangeText={e => setPassword(e)}
-        style={styles.textInput}
-        secureTextEntry={true}
-      />
-
-      <TouchableOpacity onPress={handleLogin}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
-        </View>
+    <>
+    <View style={styles.languageButtonsContainer}>
+      <TouchableOpacity
+        style={[
+          styles.languageButton,
+          selectedLanguage === 'en'
+            ? { backgroundColor: 'green' }
+            : { backgroundColor: 'white' },
+        ]}
+        onPress={() => changeLanguage('en')}
+      >
+        <Text
+          style={[
+            styles.languageButtonText,
+            selectedLanguage === 'en'
+              ? { color: 'white' }
+              : { color: 'green' },
+          ]}
+        >
+          En
+        </Text>
       </TouchableOpacity>
 
-      <Text style={styles.questionText}>Don't have an account?</Text>
-      <TouchableOpacity onPress={() => props.navigation.navigate('SignUp')}>
-        <Text style={styles.linkText}>Create Account</Text>
+      <TouchableOpacity
+        style={[
+          styles.languageButton,
+          selectedLanguage === 'bn'
+            ? { backgroundColor: 'green' }
+            : { backgroundColor: 'white' },
+        ]}
+        onPress={() => changeLanguage('bn')}
+      >
+        <Text
+          style={[
+            styles.languageButtonText,
+            
+            selectedLanguage === 'bn'
+              ? { color: 'white' }
+              : { color: 'green' },
+          ]}
+        >
+          বাং
+        </Text>
       </TouchableOpacity>
-    </View>
+    </View><View style={styles.container}>
+        <Text style={styles.logoText}>{t('title')}</Text>
+        <TextInput
+          placeholder={t('email')}
+          onChangeText={(e) => setEmail(e)}
+          style={styles.textInput} />
+        <TextInput
+          placeholder={t('password')}
+          onChangeText={(e) => setPassword(e)}
+          style={styles.textInput}
+          secureTextEntry={true} />
+
+        <TouchableOpacity onPress={handleLogin}>
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>{t('login')}</Text>
+          </View>
+        </TouchableOpacity>
+
+        <Text style={styles.questionText}>{t('accountQuestion')}</Text>
+        <TouchableOpacity onPress={() => props.navigation.navigate('SignUp')}>
+          <Text style={styles.linkText}>{t('createAccount')}</Text>
+        </TouchableOpacity>
+      </View></>
   );
 };
 
@@ -73,6 +114,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  languageButtonsContainer: {
+    position: 'absolute',
+    right: 2,
+    fontSize: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '30%',
+    marginTop: 20,
+    marginRight: 15,
+  },
+  languageButton: {
+    flex: 1,
+    padding: 5,
+    borderRadius: 5,
+    alignItems: 'center',
+    fontSize: 5,
+  },
+  languageButtonText: {
+    fontSize: 18,
   },
   questionText: {
     marginTop: 10,
@@ -106,7 +167,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   linkText: {
-    color: 'green', 
+    color: 'green',
     fontSize: 18,
     marginTop: 2,
   },
