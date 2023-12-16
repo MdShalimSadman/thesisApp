@@ -7,9 +7,15 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import {useTranslation} from 'react-i18next';
+import i18n from '../i18n';
+import * as RNLocalize from 'react-native-localize';
 
 const FarmerProfile = ({route, navigation}) => {
   const {name, products} = route.params;
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    i18n.language ,
+  );
 
   const dummyPrices = {
     Rice: 2.5,
@@ -63,9 +69,9 @@ const FarmerProfile = ({route, navigation}) => {
     <View style={styles.productItem}>
       <Text style={styles.productName}>{item}</Text>
       <View style={styles.productDetails}>
-        <Text style={styles.productPrice}>{`Tk per Kg: ${dummyPrices[item].toFixed(
-          2,
-        )}`}</Text>
+        <Text style={styles.productPrice}>{t('takaPerKg')}{` ${dummyPrices[
+          item
+        ].toFixed(2)}`}</Text>
         <TextInput
           style={styles.quantityInput}
           placeholder="qty (kg)"
@@ -77,24 +83,72 @@ const FarmerProfile = ({route, navigation}) => {
       </View>
     </View>
   );
+  const {t} = useTranslation(['translation'], {i18n});
+  const changeLanguage = lng => {
+    i18n.changeLanguage(lng);
+   setSelectedLanguage(i18n.language);
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.headerText}>{name}'s Products</Text>
-      <FlatList
-        data={products}
-        keyExtractor={item => item}
-        renderItem={renderProductItem}
-      />
-      <Text style={styles.totalPriceText}>
-        Total Price: Taka {getTotalPrice()}
-      </Text>
-      <TouchableOpacity onPress={handleAddToCart}>
-        <View style={styles.addToCartButton}>
-          <Text style={styles.addToCartButtonText}>+ Add to Cart</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+    <>
+      <View style={styles.languageButtonsContainer}>
+        <TouchableOpacity
+          style={[
+            styles.languageButton,
+            selectedLanguage === 'en'
+              ? {backgroundColor: 'green'}
+              : {backgroundColor: 'white'},
+          ]}
+          onPress={() => changeLanguage('en')}>
+          <Text
+            style={[
+              styles.languageButtonText,
+              selectedLanguage === 'en' ? {color: 'white'} : {color: 'green'},
+            ]}>
+            En
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[
+            styles.languageButton,
+            selectedLanguage === 'bn'
+              ? {backgroundColor: 'green'}
+              : {backgroundColor: 'white'},
+          ]}
+          onPress={() => changeLanguage('bn')}>
+          <Text
+            style={[
+              styles.languageButtonText,
+
+              selectedLanguage === 'bn' ? {color: 'white'} : {color: 'green'},
+            ]}>
+            বাং
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.headerText}>
+          {name}
+          {t('products')}
+        </Text>
+        <FlatList
+          data={products}
+          keyExtractor={item => item}
+          renderItem={renderProductItem}
+        />
+        <Text style={styles.totalPriceText}>
+          {t('totalPrice')}
+          {t('taka')} 
+          {getTotalPrice()}
+        </Text>
+        <TouchableOpacity onPress={handleAddToCart}>
+          <View style={styles.addToCartButton}>
+            <Text style={styles.addToCartButtonText}>{t('addToCart')}</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </>
   );
 };
 
@@ -102,6 +156,25 @@ const styles = StyleSheet.create({
   productDetails: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  languageButtonsContainer: {
+    position: 'absolute',
+    right: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '30%',
+    marginTop: 20,
+    marginRight: 15,
+  },
+  languageButton: {
+    flex: 1,
+    padding: 5,
+    borderRadius: 5,
+    alignItems: 'center',
+    fontSize: 5,
+  },
+  languageButtonText: {
+    fontSize: 18,
   },
   productPrice: {
     fontSize: 16,
@@ -111,6 +184,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    marginTop: 80
   },
   headerText: {
     fontSize: 24,

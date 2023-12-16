@@ -6,10 +6,16 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import {useTranslation} from 'react-i18next';
+import i18n from '../i18n';
+import * as RNLocalize from 'react-native-localize';
 
 const Bidding = ({route, navigation}) => {
   const {estimatedPrice, totalPrice} = route.params;
   const [userProposedPrice, setUserProposedPrice] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    i18n.language || 'en',
+  );
   const [timer, setTimer] = useState(60); // 5 minutes in seconds
   const [timerExpired, setTimerExpired] = useState(false);
 
@@ -46,44 +52,92 @@ const Bidding = ({route, navigation}) => {
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
   };
 
+  const {t} = useTranslation(['translation'], {i18n});
+  const changeLanguage = lng => {
+    i18n.changeLanguage(lng);
+    setSelectedLanguage(i18n.language);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.headerText}>Bidding</Text>
-      <Text style={styles.estimatedPriceText}>
-        Measured Price: Taka {totalPrice}
-      </Text>
-      <Text style={styles.subHeaderText}>Choose an option:</Text>
+    <>
+      <View style={styles.languageButtonsContainer}>
+        <TouchableOpacity
+          style={[
+            styles.languageButton,
+            selectedLanguage === 'en'
+              ? {backgroundColor: 'green'}
+              : {backgroundColor: 'white'},
+          ]}
+          onPress={() => changeLanguage('en')}>
+          <Text
+            style={[
+              styles.languageButtonText,
+              selectedLanguage === 'en' ? {color: 'white'} : {color: 'green'},
+            ]}>
+            En
+          </Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.optionButton} onPress={handleAccept}>
-        <Text style={styles.optionButtonText}>Accept and Proceed</Text>
-      </TouchableOpacity>
-      {timerExpired ? (
-        <Text style={styles.timerExpiredText}>Time Limit Expired for bidding. Please tap on "Accept and Proceed" to proceed to payment</Text>
-      ) : (
-        <>
-          <Text style={styles.subHeaderText}>OR</Text>
+        <TouchableOpacity
+          style={[
+            styles.languageButton,
+            selectedLanguage === 'bn'
+              ? {backgroundColor: 'green'}
+              : {backgroundColor: 'white'},
+          ]}
+          onPress={() => changeLanguage('bn')}>
+          <Text
+            style={[
+              styles.languageButtonText,
 
-          <Text style={styles.subHeaderText}>Propose a Price:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your proposed price"
-            keyboardType="numeric"
-            value={userProposedPrice}
-            onChangeText={text => setUserProposedPrice(text)}
-            placeholderTextColor="grey"
-            editable={!timerExpired}
-          />
+              selectedLanguage === 'bn' ? {color: 'white'} : {color: 'green'},
+            ]}>
+            বাং
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.headerText}>{t('bidding')}</Text>
+        <Text style={styles.estimatedPriceText}>
+          {t('measured')}
+          {t('taka')}
+          {totalPrice}
+        </Text>
+        <Text style={styles.subHeaderText}>{t('choose')}</Text>
 
-          <TouchableOpacity
-            style={styles.optionButton}
-            onPress={handlePropose}
-            disabled={timerExpired}>
-            <Text style={styles.optionButtonText}>Propose Price</Text>
-          </TouchableOpacity>
-        </>
-      )}
-        <Text style={styles.timerText}>Time Left: {formatTime(timer)}</Text>
-    </View>
+        <TouchableOpacity style={styles.optionButton} onPress={handleAccept}>
+          <Text style={styles.optionButtonText}>{t('accept')}</Text>
+        </TouchableOpacity>
+        {timerExpired ? (
+          <Text style={styles.timerExpiredText}>{t('warning')}</Text>
+        ) : (
+          <>
+            <Text style={styles.subHeaderText}>{t('or')}</Text>
+
+            <Text style={styles.subHeaderText}>{t('propose')}</Text>
+            <TextInput
+              style={styles.input}
+              placeholder={t('enterProposed')}
+              keyboardType="numeric"
+              value={userProposedPrice}
+              onChangeText={text => setUserProposedPrice(text)}
+              placeholderTextColor="grey"
+              editable={!timerExpired}
+            />
+
+            <TouchableOpacity
+              style={styles.optionButton}
+              onPress={handlePropose}
+              disabled={timerExpired}>
+              <Text style={styles.optionButtonText}>{t('proposeButton')}</Text>
+            </TouchableOpacity>
+          </>
+        )}
+        <Text style={styles.timerText}>
+         {t('time')}
+         {formatTime(timer)}</Text>
+      </View>
+    </>
   );
 };
 
@@ -91,6 +145,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    marginTop:80
+  },
+  languageButtonsContainer: {
+    position: 'absolute',
+    right: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '30%',
+    marginTop: 20,
+    marginRight: 15,
+  },
+  languageButton: {
+    flex: 1,
+    padding: 5,
+    borderRadius: 5,
+    alignItems: 'center',
+    fontSize: 5,
+  },
+  languageButtonText: {
+    fontSize: 18,
   },
   headerText: {
     fontSize: 24,

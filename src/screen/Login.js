@@ -15,7 +15,10 @@ import * as RNLocalize from 'react-native-localize';
 const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    i18n.language || 'en',
+  );
+
 
   const handleLogin = async () => {
     try {
@@ -33,7 +36,7 @@ const Login = (props) => {
   const { t } = useTranslation(['translation'], { i18n });
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-    setSelectedLanguage(lng);
+   setSelectedLanguage(i18n.language);
   };
 
   return (
@@ -81,7 +84,8 @@ const Login = (props) => {
           বাং
         </Text>
       </TouchableOpacity>
-    </View><View style={styles.container}>
+    </View>
+    <View style={styles.container}>
         <Text style={styles.logoText}>{t('title')}</Text>
         <TextInput
           placeholder={t('email')}
@@ -118,7 +122,6 @@ const styles = StyleSheet.create({
   languageButtonsContainer: {
     position: 'absolute',
     right: 2,
-    fontSize: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '30%',

@@ -8,6 +8,9 @@ import * as RNLocalize from 'react-native-localize';
 const SignUp = (props) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    i18n.language ,
+  );
 
   const handleSignUp = async () => {
     try {
@@ -23,35 +26,100 @@ const SignUp = (props) => {
   };
 
   const { t } = useTranslation(['translation'], { i18n });
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+   setSelectedLanguage(i18n.language);
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.logoText}>{t('title')}</Text>
+    <><View style={styles.languageButtonsContainer}>
+      <TouchableOpacity
+        style={[
+          styles.languageButton,
+          selectedLanguage === 'en'
+              ? {backgroundColor: 'green'}
+            : { backgroundColor: 'white' },
+        ]}
+        onPress={() => changeLanguage('en')}
+      >
+        <Text
+          style={[
+            styles.languageButtonText,
+            selectedLanguage === 'en'
+              ? { color: 'white' }
+              : { color: 'green' },
+          ]}
+        >
+          En
+        </Text>
+      </TouchableOpacity>
 
-      <TextInput
-        placeholder={t('email')}
-        onChangeText={(e) => setEmail(e)}
-        style={styles.textInput}
-      />
-      <TextInput
-        placeholder={t('password')}
-        onChangeText={(e) => setPassword(e)}
-        style={styles.textInput}
-        secureTextEntry={true}
-      />
+      <TouchableOpacity
+        style={[
+          styles.languageButton,
+          selectedLanguage === 'bn'
+            ? { backgroundColor: 'green' }
+            : { backgroundColor: 'white' },
+        ]}
+        onPress={() => changeLanguage('bn')}
+      >
+        <Text
+          style={[
+            styles.languageButtonText,
 
-      <TouchableOpacity onPress={handleSignUp}>
-        <View style={styles.button}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </View>
+            selectedLanguage === 'bn'
+              ? { color: 'white' }
+              : { color: 'green' },
+          ]}
+        >
+          বাং
+        </Text>
       </TouchableOpacity>
     </View>
+    <View style={styles.container}>
+        <Text style={styles.logoText}>{t('title')}</Text>
+
+        <TextInput
+          placeholder={t('email')}
+          onChangeText={(e) => setEmail(e)}
+          style={styles.textInput} />
+        <TextInput
+          placeholder={t('password')}
+          onChangeText={(e) => setPassword(e)}
+          style={styles.textInput}
+          secureTextEntry={true} />
+
+        <TouchableOpacity onPress={handleSignUp}>
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>{t('signup')}</Text>
+          </View>
+        </TouchableOpacity>
+      </View></>
   );
 };
 
 export default SignUp;
 
 const styles = StyleSheet.create({
+  languageButtonsContainer: {
+    position: 'absolute',
+    right: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '30%',
+    marginTop: 20,
+    marginRight: 15,
+  },
+  languageButton: {
+    flex: 1,
+    padding: 5,
+    borderRadius: 5,
+    alignItems: 'center',
+    fontSize: 5,
+  },
+  languageButtonText: {
+    fontSize: 18,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
