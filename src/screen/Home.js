@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
+
 const Home = () => {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');

@@ -7,6 +7,8 @@ import {
   StyleSheet,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import {useTranslation} from 'react-i18next';
+import i18n from '../i18n';
 
 const Login = props => {
   const [email, setEmail] = useState('');
@@ -26,9 +28,11 @@ const Login = props => {
     }
   };
 
+  const {t} = useTranslation(['translation'], {i18n});
+
   return (
     <View style={styles.container}>
-      <Text style={styles.logoText}>Alokito Krishi</Text>
+      <Text style={styles.logoText}>{t('greeting')}</Text>
       <TextInput
         placeholder="Enter email"
         onChangeText={e => setEmail(e)}
