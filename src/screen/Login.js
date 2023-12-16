@@ -5,10 +5,12 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  Button
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {useTranslation} from 'react-i18next';
 import i18n from '../i18n';
+import * as RNLocalize from 'react-native-localize';
 
 const Login = props => {
   const [email, setEmail] = useState('');
@@ -29,9 +31,14 @@ const Login = props => {
   };
 
   const {t} = useTranslation(['translation'], {i18n});
+  const changeLanguage = lng => {
+    i18n.changeLanguage(lng);
+  };
 
   return (
     <View style={styles.container}>
+      <Button title="English" onPress={() => changeLanguage('en')} />
+      <Button title="বাংলা" onPress={() => changeLanguage('bn')} />
       <Text style={styles.logoText}>{t('greeting')}</Text>
       <TextInput
         placeholder="Enter email"
@@ -99,7 +106,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   linkText: {
-    color: 'green', // Set the hyperlink color to green
+    color: 'green', 
     fontSize: 18,
     marginTop: 2,
   },
