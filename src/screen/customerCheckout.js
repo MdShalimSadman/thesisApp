@@ -1,5 +1,15 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
+import {useTranslation} from 'react-i18next';
+import i18n from '../i18n';
+import * as RNLocalize from 'react-native-localize';
 
 const CustomerCheckout = ({route, navigation}) => {
   const {farmerName, selectedProducts, totalPrice} = route.params;
@@ -7,12 +17,34 @@ const CustomerCheckout = ({route, navigation}) => {
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [customerAddress, setCustomerAddress] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    i18n.language || 'en',
+  );
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       padding: 16,
-      backgroundColor: '#F5F5F5',
+      marginTop: 80,
+    },
+    languageButtonsContainer: {
+      position: 'absolute',
+      right: 2,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: '30%',
+      marginTop: 20,
+      marginRight: 15,
+    },
+    languageButton: {
+      flex: 1,
+      padding: 5,
+      borderRadius: 5,
+      alignItems: 'center',
+      fontSize: 5,
+    },
+    languageButtonText: {
+      fontSize: 18,
     },
     headerText: {
       fontSize: 24,
@@ -32,7 +64,6 @@ const CustomerCheckout = ({route, navigation}) => {
       justifyContent: 'space-between',
       alignItems: 'center',
       marginBottom: 12,
-      backgroundColor: 'white',
       padding: 10,
       borderRadius: 5,
     },
@@ -94,55 +125,109 @@ const CustomerCheckout = ({route, navigation}) => {
     });
   };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.headerText}>Customer Information</Text>
-      {/* Customer Information */}
-      <View style={styles.customerInfoContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Customer Name"
-          placeholderTextColor="grey"
-          value={customerName}
-          onChangeText={setCustomerName}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Customer Phone"
-          placeholderTextColor="grey"
-          value={customerPhone}
-          onChangeText={setCustomerPhone}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Customer Address"
-          value={customerAddress}
-          placeholderTextColor="grey"
-          onChangeText={setCustomerAddress}
-        />
-      </View>
+  const {t} = useTranslation(['translation'], {i18n});
+  const changeLanguage = lng => {
+    i18n.changeLanguage(lng);
+    setSelectedLanguage(i18n.language);
+  };
 
-      <Text style={styles.headerText2}>Order Summary</Text>
-      {/* Product and Quantity Information */}
-      <Text style={styles.farmerNameHeading}> Farmer: {farmerName}</Text>
-      <FlatList
-        data={selectedProducts}
-        keyExtractor={item => item.name}
-        renderItem={({item}) => (
-          <View style={styles.productItem}>
-            <Text style={styles.productName}>{item.name}</Text>
-            <Text style={styles.quantityText}>Quantity: {item.quantity}</Text>
-          </View>
-        )}
-      />
-      <Text style={styles.totalPriceText}>Total Price: Taka {totalPrice}</Text>
-       <TouchableOpacity onPress={handleProceedToPayment}>
-        <View style={styles.proceedToPaymentButton}>
-          <Text style={styles.proceedToPaymentButtonText}>Proceed to Bidding</Text>
+  return (
+    <>
+      <View style={styles.languageButtonsContainer}>
+        <TouchableOpacity
+          style={[
+            styles.languageButton,
+            selectedLanguage === 'en'
+              ? {backgroundColor: 'green'}
+              : {backgroundColor: 'white'},
+          ]}
+          onPress={() => changeLanguage('en')}>
+          <Text
+            style={[
+              styles.languageButtonText,
+              selectedLanguage === 'en' ? {color: 'white'} : {color: 'green'},
+            ]}>
+            En
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[
+            styles.languageButton,
+            selectedLanguage === 'bn'
+              ? {backgroundColor: 'green'}
+              : {backgroundColor: 'white'},
+          ]}
+          onPress={() => changeLanguage('bn')}>
+          <Text
+            style={[
+              styles.languageButtonText,
+
+              selectedLanguage === 'bn' ? {color: 'white'} : {color: 'green'},
+            ]}>
+            বাং
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.headerText}>{t('customerInfo')}</Text>
+        {/* Customer Information */}
+        <View style={styles.customerInfoContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder={t('customerName')}
+            placeholderTextColor="grey"
+            value={customerName}
+            onChangeText={setCustomerName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder={t('customerPhone')}
+            placeholderTextColor="grey"
+            value={customerPhone}
+            onChangeText={setCustomerPhone}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder={t('customerAddress')}
+            value={customerAddress}
+            placeholderTextColor="grey"
+            onChangeText={setCustomerAddress}
+          />
         </View>
-      </TouchableOpacity>
-      {/* Additional components or features can be added here */}
-    </View>
+
+        <Text style={styles.headerText2}>{t('orderSummary')}</Text>
+        {/* Product and Quantity Information */}
+        <Text style={styles.farmerNameHeading}>
+          {' '}
+          {t('farmer')}
+          {farmerName}
+        </Text>
+        <FlatList
+          data={selectedProducts}
+          keyExtractor={item => item.name}
+          renderItem={({item}) => (
+            <View style={styles.productItem}>
+              <Text style={styles.productName}>{item.name}</Text>
+              <Text style={styles.quantityText}>Quantity: {item.quantity}</Text>
+            </View>
+          )}
+        />
+        <Text style={styles.totalPriceText}>
+          {t('totalPrice')}
+          {t('taka')}
+          {totalPrice}
+        </Text>
+        <TouchableOpacity onPress={handleProceedToPayment}>
+          <View style={styles.proceedToPaymentButton}>
+            <Text style={styles.proceedToPaymentButtonText}>
+              {t('proceedToBidding')}
+            </Text>
+          </View>
+        </TouchableOpacity>
+        {/* Additional components or features can be added here */}
+      </View>
+    </>
   );
 };
 

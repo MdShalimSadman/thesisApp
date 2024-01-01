@@ -1,0 +1,38 @@
+{
+    "title": "Alokito Krishi",
+
+    "email": "Enter email",
+    "password":"Enter password",
+    "accountQuestion":"Do not have an Account?",
+    "createAccount":"Create Account",
+    "login":"Login",
+    "signup":"Sign up",
+
+    "productSearch":"Search for products",
+
+    "products":"'s Products",
+    "taka":"Taka ",
+    "takaPerKg":"Tk per Kg",
+    "totalPrice":"Total Price ",
+    "addToCart":"+ Add to Cart",
+
+    "customerInfo":"Customer Information",
+    "orderSummary":"Order Summary",
+    "farmer":"Farmer's Name: ",
+    "customerName":"Customer Name",
+    "customerPhone":"Customer Phone",
+    "customerAddress":"Customer Address",
+    "proceedToBidding":"Proceed to Bidding",
+
+    "bidding":"Bidding",
+    "measured":"Measured Price: ",
+    "choose":"Choose an Option: ",
+    "accept":"Accept and Proceed",
+    "or":"Or",
+    "propose":"Propose a Price",
+    "enterProposed":"Enter your proposed price",
+    "proposeButton":"Propose price",
+    "time":"Time Left: ",
+    "warning":"Time Limit Expired for bidding. Please tap on 'Accept and Proceed' to proceed to payment"
+  }
+  
