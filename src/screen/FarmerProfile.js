@@ -41,6 +41,7 @@ const FarmerProfile = ({route, navigation}) => {
       product => cart[product] > 0,
     );
 
+
     // Prepare data to pass to CustomerCheckout screen
     const checkoutData = {
       farmerName: name,
@@ -69,9 +70,10 @@ const FarmerProfile = ({route, navigation}) => {
     <View style={styles.productItem}>
       <Text style={styles.productName}>{item}</Text>
       <View style={styles.productDetails}>
-        <Text style={styles.productPrice}>{t('takaPerKg')}{` ${dummyPrices[
-          item
-        ].toFixed(2)}`}</Text>
+        <Text style={styles.productPrice}>
+          {t('takaPerKg')}
+          {` ${dummyPrices[item].toFixed(2)}`}
+        </Text>
         <TextInput
           style={styles.quantityInput}
           placeholder="qty (kg)"

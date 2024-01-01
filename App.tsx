@@ -27,19 +27,21 @@ import SignUp2 from './src/screen/SignUp2';
 import FarmerProfile from './src/screen/FarmerProfile';
 import customerCheckout from './src/screen/customerCheckout';
 import Bidding from './src/screen/Bidding';
+import RatingScreen from './src/screen/RatingScreen';
 
 const Stack = createNativeStackNavigator();
 function App(): JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        {/* <Stack.Screen name="Rating" component={RatingScreen} /> */}
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="SignUp2" component={SignUp2} />
         <Stack.Screen name="Farmer Profile" component={FarmerProfile} />
         <Stack.Screen name="Customer Checkout" component={customerCheckout} />
         <Stack.Screen name="Bidding" component={Bidding}/>
+        <Stack.Screen name="Rating" component={RatingScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -20,15 +20,13 @@ const Bidding = ({route, navigation}) => {
   const [timerExpired, setTimerExpired] = useState(false);
 
   const handleAccept = () => {
-    // Implement logic for accepting estimated price
-    // This can include further actions like initiating payment, etc.
     console.log('Accepted Estimated Price:', estimatedPrice);
+    navigation.navigate('Rating');
   };
 
   const handlePropose = () => {
-    // Implement logic for user proposing a price
-    // This can include further actions like sending the proposed price to the server, etc.
     console.log('User Proposed Price:', userProposedPrice);
+    navigation.navigate('Rating');
   };
 
   useEffect(() => {
@@ -134,8 +132,9 @@ const Bidding = ({route, navigation}) => {
           </>
         )}
         <Text style={styles.timerText}>
-         {t('time')}
-         {formatTime(timer)}</Text>
+          {t('time')}
+          {formatTime(timer)}
+        </Text>
       </View>
     </>
   );
@@ -145,7 +144,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    marginTop:80
+    marginTop: 80,
   },
   languageButtonsContainer: {
     position: 'absolute',
